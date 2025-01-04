@@ -48,6 +48,7 @@
     "react-i18next": "^15.2.0",
     "react-native": "0.76.5",
     "react-native-calendar-picker": "^8.0.5",
+    "react-native-calendars": "^1.1307.0",
     "react-native-gesture-handler": "~2.20.2",
     "react-native-get-random-values": "^1.11.0",
     "react-native-google-mobile-ads": "^14.7.2",
