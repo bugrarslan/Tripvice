@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    paddingHorizontal: wp(5),
+    paddingHorizontal: wp(4),
     gap: 10,
   },
   header: {

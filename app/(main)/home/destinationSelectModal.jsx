@@ -52,25 +52,31 @@ const destinationSelectModal = () => {
               }));
               router.back();
             }}
+            isRowScrollable
             query={{
               key: googlePlacesApiKey,
               language: (i18n.language === "tr" ? "tr" : "en"),
             }}
             styles={{
               textInputContainer: {
-                borderWidth: 2,
                 borderRadius: theme.radius.xl,
                 borderCurve: "continuous",
-                borderColor: "#000",
                 justifyContent: "center",
+                backgroundColor: theme.colors.containerColor,
               },
               textInput: {
                 fontWeight: theme.fonts.bold,
                 fontSize: hp(2.5),
                 color: "black",
                 borderRadius: theme.radius.xl,
-                backgroundColor: "white",
+                backgroundColor: theme.colors.containerColor,
                 height: hp(8),
+              },
+              row: {
+                backgroundColor: theme.colors.containerColor,
+                borderRadius: theme.radius.xl,
+                borderCurve: "continuous",
+                marginVertical: 5,
               },
             }}
           />
@@ -85,7 +91,7 @@ export default destinationSelectModal;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: wp(5),
+    paddingHorizontal: wp(4),
     gap: 10,
     backgroundColor: "white",
   },

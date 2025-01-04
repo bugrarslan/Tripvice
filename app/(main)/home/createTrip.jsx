@@ -129,7 +129,7 @@ export default createTrip;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
-    paddingHorizontal: wp(5),
+    paddingHorizontal: wp(4),
   },
   header: {
     flexDirection: "row",

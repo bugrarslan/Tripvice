@@ -9,3 +9,17 @@ export const hp = (percentage) => {
 export const wp = (percentage) => {
   return (percentage * deviceWidth) / 100;
 };
+
+export const ensureHttps = (url) => {
+  if (!url.startsWith('http://') && !url.startsWith('https://')) {
+    return `https://${url}`;
+  }
+  return url;
+};
+
+export const trimmedString = (str, maxLength) => {
+  if (str.length > maxLength) {
+    return str.substring(0, maxLength) + "...";
+  }
+  return str;
+};

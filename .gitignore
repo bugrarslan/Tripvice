@@ -38,7 +38,5 @@ yarn-error.*
 # my custom rules
 /android
 /ios
-.vscode
-/.idea/
 /constants/index.js
 constants/data.json

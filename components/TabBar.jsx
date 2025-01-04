@@ -8,6 +8,7 @@ import { hp, wp } from "../helpers/common";
 const TabBar = ({ state, descriptors, navigation, t }) => {
   const pathname = usePathname();
 
+
   const hiddenRoutes = [
     // "/home/budgetSelectModal",
     // "/home/companionSelectModal",
@@ -79,15 +80,16 @@ export default TabBar;
 const styles = StyleSheet.create({
   tabBar: {
     position: "absolute",
-    bottom: 25,
+    bottom: hp(1),
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: "white",
     marginHorizontal: wp(4),
-    paddingVertical: hp(2),
+    paddingVertical: hp(1.8),
     borderRadius: theme.radius.xxl,
     borderCurve: "continuous",
+    // shadow
     shadowOffset: { width: 0, height: 10 },
     shadowColor: "black",
     shadowOpacity: 0.1,

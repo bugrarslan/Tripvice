@@ -34,7 +34,7 @@ const editProfile = () => {
 
   // custom alert
   const [isAlertVisible, setAlertVisible] = useState(false);
-  const [alertData, setAlertData] = useState({buttons: []});
+  const [alertData, setAlertData] = useState({ buttons: [] });
 
   const showAlert = (data) => {
     setAlertVisible(true);
@@ -43,7 +43,7 @@ const editProfile = () => {
 
   const closeAlert = () => {
     setAlertVisible(false);
-    setAlertData({buttons: []});
+    setAlertData({ buttons: [] });
   };
 
   useEffect(() => {
@@ -178,6 +178,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: wp(4),
+    paddingBottom: hp(12),
   },
   avatarContainer: {
     height: hp(14),
@@ -206,7 +207,7 @@ const styles = StyleSheet.create({
     elevation: 7,
   },
   form: {
-    gap: 18,
+    gap: hp(2),
     marginTop: 20,
   },
   bio: {

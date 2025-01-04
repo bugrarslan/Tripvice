@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { theme } from "../constants/theme";
 import * as Linking from "expo-linking";
-import {hp} from "../helpers/common";
+import {ensureHttps, hp} from "../helpers/common";
  
 const FlightInfoCard = ({ flightDetails, t }) => {
   return (
@@ -27,7 +27,7 @@ const FlightInfoCard = ({ flightDetails, t }) => {
             borderRadius: theme.radius.lg,
           }}
           onPress={() => {
-            Linking.openURL(flightDetails[0]?.booking_URL);
+            Linking.openURL(ensureHttps(flightDetails[0]?.Booking_URL));
           }}
         >
           <Text
