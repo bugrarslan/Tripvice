@@ -78,7 +78,13 @@ const editProfile = () => {
       showAlert({
         type: "error",
         title: t("alert.error"),
-        content: t("alert.errorOccurred"),
+        content: t("alert.fillAllDetails"),
+        buttons: [
+          {
+            text: t("alert.ok"),
+            onPress: () => closeAlert(),
+          },
+        ],
       });
       return;
     }

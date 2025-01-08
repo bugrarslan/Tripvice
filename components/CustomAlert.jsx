@@ -11,21 +11,24 @@ const CustomAlert = ({ visible, onClose, title, message, buttons }) => {
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.message}>{message}</Text>
           <View style={styles.buttonContainer}>
-            {buttons.map((button, index) => (
-              <TouchableOpacity
-                key={index}
-                style={index === 0 ? styles.buttonDark : styles.buttonLight}
-                onPress={button.onPress}
-              >
-                <Text
-                  style={
-                    index === 0 ? styles.buttonTextDark : styles.buttonTextLight
-                  }
+            {buttons &&
+              buttons.map((button, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={index === 0 ? styles.buttonDark : styles.buttonLight}
+                  onPress={button.onPress}
                 >
-                  {button.text}
-                </Text>
-              </TouchableOpacity>
-            ))}
+                  <Text
+                    style={
+                      index === 0
+                        ? styles.buttonTextDark
+                        : styles.buttonTextLight
+                    }
+                  >
+                    {button.text}
+                  </Text>
+                </TouchableOpacity>
+              ))}
           </View>
         </View>
       </View>
