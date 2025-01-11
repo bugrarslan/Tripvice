@@ -34,10 +34,13 @@ const forgotPassword = () => {
     setLoading(true);
     const res = await sendForgotPasswordMail(emailRef.current);
     if (res?.success) {
+      setLoading(false);
       console.log(res.data);
+      router.push({
+        pathname: "/signIn/confirmOTP",
+        params: { email: emailRef.current },
+      });
     }
-    setLoading(false);
-    router.push("/confirmOTP");
   };
 
   return (
