@@ -37,7 +37,7 @@ const forgotPassword = () => {
       console.log(res.data);
     }
     setLoading(false);
-    router.back();
+    router.push("/confirmOTP");
   };
 
   return (

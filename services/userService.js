@@ -37,7 +37,9 @@ export const updateUserData = async (userId, data) => {
 
 export const sendForgotPasswordMail = async (email) => {
   try {
-    const { data, error } = await supabase.auth.resetPasswordForEmail(email);
+    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: "https://example.com/update-password",
+    });
     if (error) {
       return { success: false, msg: error?.message };
     }
