@@ -11,20 +11,20 @@ import {
 } from "react-native";
 import React, { useRef, useState } from "react";
 import { useRouter } from "expo-router";
-import { hp, wp } from "../helpers/common";
-import ScreenWrapper from "../components/ScreenWrapper";
+import { hp, wp } from "../../helpers/common";
+import ScreenWrapper from "../../components/ScreenWrapper";
 import { StatusBar } from "expo-status-bar";
-import { theme } from "../constants/theme";
-import BackButton from "../components/BackButton";
-import Input from "../components/Input";
-import Icon from "../assets/icons";
-import Button from "../components/Button";
-import { supabase } from "../lib/supabase";
+import { theme } from "../../constants/theme";
+import BackButton from "../../components/BackButton";
+import Input from "../../components/Input";
+import Icon from "../../assets/icons";
+import Button from "../../components/Button";
+import { supabase } from "../../lib/supabase";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useTranslation } from "react-i18next";
-import CustomAlert from "../components/CustomAlert";
+import CustomAlert from "../../components/CustomAlert";
 
-const signUp = () => {
+const index = () => {
   const router = useRouter();
   const { t } = useTranslation();
   const emailRef = useRef("");
@@ -221,7 +221,7 @@ const signUp = () => {
   );
 };
 
-export default signUp;
+export default index;
 
 const styles = StyleSheet.create({
   container: {
