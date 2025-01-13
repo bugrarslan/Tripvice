@@ -1,5 +1,4 @@
 import {
-  Alert,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -7,8 +6,6 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -66,7 +63,7 @@ const confirmOTP = () => {
       showAlert({
         type: "inValid",
         title: t("alert.warning"),
-        content: t("alert.fillAllFields"),
+        content: t("alert.emptyOTP"),
         buttons: [
           {
             text: t("alert.ok"),
@@ -80,7 +77,6 @@ const confirmOTP = () => {
 
     try {
       const response = await verifyOTP(email, otpRef.current);
-
       if (response.success) {
         setLoading(false);
         router.replace({
@@ -92,7 +88,7 @@ const confirmOTP = () => {
         showAlert({
           type: "error",
           title: t("alert.error"),
-          content: t("alert.errorOccurred"),
+          content: t("alert.wrongOTP"),
           buttons: [
             {
               text: t("alert.ok"),
@@ -128,8 +124,8 @@ const confirmOTP = () => {
         setCountdown(60);
         showAlert({
           type: "success",
-          title: "Success",
-          content: "Yeni kod Gönderildi",
+          title: t("alert.success"),
+          content: t("alert.resendOTP"),
           buttons: [
             {
               text: t("alert.ok"),
@@ -142,7 +138,7 @@ const confirmOTP = () => {
         showAlert({
           type: "error",
           title: t("alert.error"),
-          content: "OTP tekrar gönderilemedi. Lütfen tekrar deneyin.",
+          content: t("alert.errorOccurred"),
           buttons: [
             {
               text: t("alert.ok"),
@@ -191,18 +187,18 @@ const confirmOTP = () => {
                   textAlign: "center",
                 }}
               >
-                Lütfen {email} adresine gönderilen doğrulama kodunu girin.
+                {t("confirmOTP.text1")} {email} {t("confirmOTP.text2")}
               </Text>
               <Input
                 icon={<Icon name="mail" size={26} strokeWidth={1.6} />}
-                placeholder={"6 Haneli kodu girin"}
+                placeholder={t("confirmOTP.placeholder")}
                 keyboardType="numeric"
                 autoCapitalize="none"
                 maxLength={6}
                 onChangeText={(value) => (otpRef.current = value)}
               />
               <Button
-                title="Doğrula"
+                title={t("confirmOTP.button")}
                 onPress={handleVerify}
                 loading={loading}
               />
@@ -210,7 +206,7 @@ const confirmOTP = () => {
 
             {/* footer */}
             <View style={styles.footer}>
-              <Text style={styles.footerText}>Doğrulama kodu ulaşmadı mı?</Text>
+              <Text style={styles.footerText}>{t("confirmOTP.footerText")}</Text>
               <Pressable onPress={handleResendOtp} disabled={resendDisabled}>
                 <Text
                   style={[
@@ -223,7 +219,7 @@ const confirmOTP = () => {
                     },
                   ]}
                 >
-                  Tekrar Gönder {resendDisabled ? `(${countdown})` : ""}
+                  {t("confirmOTP.footerButton")} {resendDisabled ? `(${countdown})` : ""}
                 </Text>
               </Pressable>
             </View>

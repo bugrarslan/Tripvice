@@ -21,12 +21,27 @@ import Icon from "../../assets/icons";
 import { useTranslation } from "react-i18next";
 import Button from "../../components/Button";
 import { sendForgotPasswordMail } from "../../services/userService";
+import CustomAlert from "../../components/CustomAlert";
 
 const forgotPassword = () => {
   const router = useRouter();
   const emailRef = useRef("");
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
+
+  // custom alert
+  const [isAlertVisible, setAlertVisible] = useState(false);
+  const [alertData, setAlertData] = useState({ buttons: [] });
+
+  const showAlert = (data) => {
+    setAlertVisible(true);
+    setAlertData(data);
+  };
+
+  const closeAlert = () => {
+    setAlertVisible(false);
+    setAlertData({ buttons: [] });
+  };
 
   const onSubmit = async () => {
     if (!emailRef.current) {
@@ -44,12 +59,32 @@ const forgotPassword = () => {
         });
       } else {
         setLoading(false);
-        Alert.alert("hata", res.msg)
+        showAlert({
+          type: "error",
+          title: t("alert.warning"),
+          content: t("forgotPassword.wait10sec"),
+          buttons: [
+            {
+              text: t("alert.ok"),
+              onPress: () => closeAlert(),
+            },
+          ],
+        });
         return;
       }
     } catch (error) {
       setLoading(false);
-      Alert.alert("hata2")
+      showAlert({
+        type: "error",
+        title: t("alert.error"),
+        content: t("alert.errorOccurred"),
+        buttons: [
+          {
+            text: t("alert.ok"),
+            onPress: () => closeAlert(),
+          },
+        ],
+      });
       return;
     }
   };
@@ -57,41 +92,51 @@ const forgotPassword = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <ScreenWrapper backgroundColor="white">
-        <View style={styles.container}>
-          <KeyboardAvoidingView
-            style={styles.container}
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          <StatusBar style="dark" />
+          <ScrollView
+            contentContainerStyle={styles.scrollContainer}
+            keyboardShouldPersistTaps="handled"
+            bounces={false}
+            overScrollMode="never"
           >
-            <StatusBar style="dark" />
-            <ScrollView
-              contentContainerStyle={styles.scrollContainer}
-              keyboardShouldPersistTaps="handled"
-              bounces={false} // for iOS
-              overScrollMode="never" // for Android
-            >
-              <BackButton router={router} />
-              <View style={styles.form}>
-                <Text
-                  style={{
-                    fontSize: hp(1.5),
-                    color: theme.colors.text,
-                    textAlign: "center",
-                  }}
-                >
-                  Lütfen şifrenizi sıfırlamak için e-posta adresinizi giriniz.
-                </Text>
-                <Input
-                  icon={<Icon name="mail" size={26} strokeWidth={1.6} />}
-                  placeholder={t("signIn.emailInput")}
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  onChangeText={(value) => (emailRef.current = value)}
-                />
-                <Button title="Send" onPress={onSubmit} loading={loading} />
-              </View>
-            </ScrollView>
-          </KeyboardAvoidingView>
-        </View>
+            <BackButton router={router} />
+            <View style={styles.form}>
+              <Text
+                style={{
+                  fontSize: hp(1.5),
+                  color: theme.colors.text,
+                  textAlign: "center",
+                }}
+              >
+                {t("forgotPassword.text")}
+              </Text>
+              <Input
+                icon={<Icon name="mail" size={26} strokeWidth={1.6} />}
+                placeholder={t("signIn.emailInput")}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                onChangeText={(value) => (emailRef.current = value)}
+              />
+              <Button
+                title={t("forgotPassword.button")}
+                onPress={onSubmit}
+                loading={loading}
+              />
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
+        {/* custom alert */}
+        <CustomAlert
+          visible={isAlertVisible}
+          onClose={closeAlert}
+          title={alertData?.title}
+          message={alertData?.content}
+          buttons={alertData?.buttons}
+        />
       </ScreenWrapper>
     </TouchableWithoutFeedback>
   );

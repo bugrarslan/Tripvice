@@ -17,6 +17,7 @@ const TabBar = ({ state, descriptors, navigation, t }) => {
     // "/home/createTrip",
     "/home/loading",
     // "/profile/editProfile"
+    
   ];
 
   if (hiddenRoutes.includes(pathname)) {
@@ -33,8 +34,6 @@ const TabBar = ({ state, descriptors, navigation, t }) => {
             : options.title !== undefined
             ? options.title
             : route.name;
-
-            console.log(route.name)
 
         if (["discover"].includes(route.name)) return null;
 

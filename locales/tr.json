@@ -2,7 +2,11 @@
   "alert": {
     "warning": "Uyarı",
     "error": "Hata",
+    "success": "Başarılı",
     "fillAllFields": "Lütfen tüm boşlukları doldurun!",
+    "emptyOTP": "Lütfen doğrulama kodunu girin",
+    "wrongOTP": "Yanlış doğrulama kodu, lütfen tekrar deneyin",
+    "resendOTP": "Doğrulama kodu yeniden gönderildi",
     "fillAllDetails": "Lütfen tüm detayları doldurun",
     "invalidLoginCredentials": "Geçersiz e-posta adresi veya şifre, lütfen tekrar deneyin.",
     "errorOccurred": "Bir hata oluştu, lütfen daha sonra tekrar deneyin.",
@@ -12,7 +16,8 @@
     "signOutAlert": "Oturumu kapatmak istediğinize emin misiniz?",
     "signOutButton": "Oturumu Kapat",
     "ok": "Tamam",
-    "cancel": "İptal"
+    "cancel": "İptal",
+    "passwordLength": "Şifreniz en az 8 karakter olmalıdır."
   },
   "welcome": {
     "welcomeText": "Bir sonraki maceranızı zahmetsizce keşfedin. Kişiselleştirilmiş güzergahlar parmaklarınızın ucunda. AI destekli içgörülerle daha akıllıca seyahat edin.",
@@ -42,6 +47,24 @@
     "signInButtonText": "Giriş Yap",
     "signInFooterText": "Hesabınız yok mu?",
     "signInFooterButtonText": "Kayıt Ol"
+  },
+  "forgotPassword": {
+    "text": "Lütfen şifrenizi sıfırlamak için e-posta adresinizi giriniz.",
+    "button": "Gönder",
+    "wait10sec": "Tekrardan mail gönderebilmek için 10 saniye bekleyin"
+  },
+  "confirmOTP": {
+    "text1": "Lütfen",
+    "text2": "adresine gönderilen doğrulama kodunu girin.",
+    "placeholder": "6 Haneli kodu girin",
+    "button": "Doğrula",
+    "footerText": "Doğrulama kodu ulaşmadı mı?",
+    "footerButton": "Tekrar Gönder"
+  },
+  "changePassword":{
+    "passwordChanged": "Şifreniz başarıyla değiştirildi.",
+    "text": "adresi için yeni bir şifre belirleyin.",
+    "button": "Değiştir"
   },
   "home": {
     "title": "Seyahatler",

@@ -2,7 +2,11 @@
   "alert": {
     "warning": "Warning",
     "error": "Error",
+    "success": "Success",
     "fillAllFields": "Please fill all the blanks!",
+    "emptyOTP": "Please enter the verification code",
+    "wrongOTP": "Wrong verification code, please try again",
+    "resendOTP": "Verification code resent",
     "fillAllDetails": "Please fill all the details",
     "errorOccurred": "An error occured, please try again later.",
     "passwordsNotMatch": "Passwords doesn't match, try again.",
@@ -11,7 +15,8 @@
     "signOutAlert": "Are you sure you want to sign out?",
     "signOutButton": "Sign Out",
     "ok": "OK",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "passwordLength": "Your password must be at least 8 characters long."
   },
   "welcome": {
     "welcomeText": "Discover your next adventure effortlessly. Personalized itineraries at your fingertips. Travel smarter with AI-driven insights.",
@@ -41,6 +46,24 @@
     "signInButtonText": "Sign In",
     "signInFooterText": "Don't have an account?",
     "signInFooterButtonText": "Sign Up"
+  },
+  "forgotPassword": {
+    "text": "Please enter your email to reset your password.",
+    "button": "Send",
+    "wait10sec": "Wait 10 seconds to send mail again"
+  },
+  "confirmOTP": {
+    "text1": "Please enter the verification code sent to",
+    "text2": "",
+    "placeholder": "Enter 6 digit code",
+    "button": "Verify",
+    "footerText": "Didn't receive the verification code?",
+    "footerButton": "Resend"
+  },
+  "changePassword":{
+    "passwordChanged": "Password changed successfully",
+    "text": "Create a password for",
+    "button": "Change Password"
   },
   "home": {
     "title": "Trips",
