@@ -49,3 +49,35 @@ export const sendForgotPasswordMail = async (email) => {
     return { success: false, msg: error?.message };
   }
 };
+
+export const verifyOTP = async (email, otp) => {
+  try {
+    const { data, error } = await supabase.auth.verifyOtp({
+      email,
+      token: otp,
+      type: "email",
+    });
+    if (error) {
+      return { success: false, msg: error?.message };
+    }
+    return { success: true, data };
+  } catch (error) {
+    console.log("got error", error);
+    return { success: false, msg: error?.message };
+  }
+};
+
+export const updateUserPassword = async (password) => {
+  try {
+    const { data, error } = await supabase.auth.updateUser({
+      password: password,
+    });
+    if (error) {
+      return { success: false, msg: error?.message };
+    }
+    return { success: true, data };
+  } catch (error) {
+    console.log("got error", error);
+    return { success: false, msg: error?.message };
+  }
+};

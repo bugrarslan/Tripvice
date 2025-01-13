@@ -8,6 +8,7 @@ const _layout = () => {
         <Stack.Screen name="index"/>
         <Stack.Screen name="forgotPassword"/>
         <Stack.Screen name="confirmOTP"/>
+        <Stack.Screen name="changePassword"/>
     </Stack>
   )
 }
