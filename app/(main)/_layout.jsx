@@ -14,6 +14,7 @@ const _layout = () => {
       initialRouteName={"home"}
     >
       <Tabs.Screen name="home" />
+      <Tabs.Screen name="discover" />
       <Tabs.Screen name="profile" />
     </Tabs>
   );
