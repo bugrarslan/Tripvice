@@ -1,14 +1,53 @@
-import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import { verifyOTP } from '../../services/userService';
+import {
+  Alert,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { sendForgotPasswordMail, verifyOTP } from "../../services/userService";
+import ScreenWrapper from "../../components/ScreenWrapper";
+import { StatusBar } from "expo-status-bar";
+import BackButton from "../../components/BackButton";
+import { hp, wp } from "../../helpers/common";
+import { theme } from "../../constants/theme";
+import Input from "../../components/Input";
+import Button from "../../components/Button";
+import Icon from "../../assets/icons";
+import { useTranslation } from "react-i18next";
+import CustomAlert from "../../components/CustomAlert";
 
 const confirmOTP = () => {
   const { email } = useLocalSearchParams();
-  const [otp, setOtp] = useState("");
+  const otpRef = useRef("");
   const [countdown, setCountdown] = useState(60);
   const [resendDisabled, setResendDisabled] = useState(true);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { t } = useTranslation();
+
+  // custom alert
+  const [isAlertVisible, setAlertVisible] = useState(false);
+  const [alertData, setAlertData] = useState({ buttons: [] });
+
+  const showAlert = (data) => {
+    setAlertVisible(true);
+    setAlertData(data);
+  };
+
+  const closeAlert = () => {
+    setAlertVisible(false);
+    setAlertData({ buttons: [] });
+  };
 
   useEffect(() => {
     let timer;
@@ -21,81 +60,211 @@ const confirmOTP = () => {
   }, [countdown]);
 
   const handleVerify = async () => {
-    if (otp.length !== 6) {
-      Alert.alert("Hata", "Lütfen 6 haneli bir OTP kodu girin.");
+    setLoading(true);
+
+    if (otpRef.current.length !== 6) {
+      showAlert({
+        type: "inValid",
+        title: t("alert.warning"),
+        content: t("alert.fillAllFields"),
+        buttons: [
+          {
+            text: t("alert.ok"),
+            onPress: () => closeAlert(),
+          },
+        ],
+      });
+      setLoading(false)
       return;
     }
 
     try {
-      const response = await verifyOTP(email, otp);
+      const response = await verifyOTP(email, otpRef.current);
 
       if (response.success) {
-        Alert.alert("Başarılı", "OTP doğrulandı.");
-        router.replace({ pathname: "/signIn/changePassword", params: { email } });
+        setLoading(false);
+        router.replace({
+          pathname: "/signIn/changePassword",
+          params: { email },
+        });
       } else {
-        Alert.alert("Hata", response.msg || "OTP doğrulama başarısız.");
+        setLoading(false);
+        showAlert({
+          type: "error",
+          title: t("alert.error"),
+          content: t("alert.errorOccurred"),
+          buttons: [
+            {
+              text: t("alert.ok"),
+              onPress: () => closeAlert(),
+            },
+          ],
+        });
+        return;
       }
     } catch (error) {
-      console.error(error);
-      Alert.alert("Hata", "Bir sorun oluştu. Lütfen tekrar deneyin.");
+      setLoading(false);
+      showAlert({
+        type: "error",
+        title: t("alert.error"),
+        content: t("alert.errorOccurred"),
+        buttons: [
+          {
+            text: t("alert.ok"),
+            onPress: () => closeAlert(),
+          },
+        ],
+      });
+      return;
     }
   };
 
   const handleResendOtp = async () => {
     try {
-      setResendDisabled(true);
-      setCountdown(60);
-
       const response = await sendForgotPasswordMail(email);
 
       if (response.success) {
-        Alert.alert("Başarılı", "Yeni OTP kodu gönderildi.");
+        setResendDisabled(true);
+        setCountdown(60);
+        showAlert({
+          type: "success",
+          title: "Success",
+          content: "Yeni kod Gönderildi",
+          buttons: [
+            {
+              text: t("alert.ok"),
+              onPress: () => closeAlert(),
+            },
+          ],
+        });
+        return;
       } else {
-        Alert.alert("Hata", "OTP tekrar gönderilemedi. Lütfen tekrar deneyin.");
+        showAlert({
+          type: "error",
+          title: t("alert.error"),
+          content: "OTP tekrar gönderilemedi. Lütfen tekrar deneyin.",
+          buttons: [
+            {
+              text: t("alert.ok"),
+              onPress: () => closeAlert(),
+            },
+          ],
+        });
+        return;
       }
     } catch (error) {
-      console.error(error);
-      Alert.alert("Hata", "Bir sorun oluştu. Lütfen tekrar deneyin.");
+      showAlert({
+        type: "error",
+        title: t("alert.error"),
+        content: t("alert.errorOccurred"),
+        buttons: [
+          {
+            text: t("alert.ok"),
+            onPress: () => closeAlert(),
+          },
+        ],
+      });
+      return;
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>OTP Doğrulama</Text>
-      <Text style={styles.subtitle}>Lütfen {email} adresine gönderilen OTP kodunu girin.</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="6 Haneli OTP"
-        keyboardType="numeric"
-        maxLength={6}
-        value={otp}
-        onChangeText={setOtp}
-      />
-      <TouchableOpacity style={styles.button} onPress={handleVerify}>
-        <Text style={styles.buttonText}>Doğrula</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[styles.resendButton, resendDisabled && styles.disabled]}
-        onPress={handleResendOtp}
-        disabled={resendDisabled}
-      >
-        <Text style={styles.resendButtonText}>Tekrar Gönder</Text>
-      </TouchableOpacity>
-      <Text style={styles.countdown}>
-        {resendDisabled ? `Tekrar gönder: ${countdown}s` : ""}
-      </Text>
-    </View>
-  );
-}
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <ScreenWrapper backgroundColor={"white"}>
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          <StatusBar style="dark" />
+          <ScrollView
+            contentContainerStyle={styles.scrollContainer}
+            keyboardShouldPersistTaps="handled"
+            bounces={false}
+            overScrollMode="never"
+          >
+            <BackButton router={router} />
+            <View style={styles.form}>
+              <Text
+                style={{
+                  fontSize: hp(1.5),
+                  color: theme.colors.text,
+                  textAlign: "center",
+                }}
+              >
+                Lütfen {email} adresine gönderilen doğrulama kodunu girin.
+              </Text>
+              <Input
+                icon={<Icon name="mail" size={26} strokeWidth={1.6} />}
+                placeholder={"6 Haneli kodu girin"}
+                keyboardType="numeric"
+                autoCapitalize="none"
+                maxLength={6}
+                onChangeText={(value) => (otpRef.current = value)}
+              />
+              <Button
+                title="Doğrula"
+                onPress={handleVerify}
+                loading={loading}
+              />
+            </View>
 
-export default confirmOTP
+            {/* footer */}
+            <View style={styles.footer}>
+              <Text style={styles.footerText}>Doğrulama kodu ulaşmadı mı?</Text>
+              <Pressable onPress={handleResendOtp} disabled={resendDisabled}>
+                <Text
+                  style={[
+                    styles.footerText,
+                    resendDisabled
+                      ? { color: theme.colors.secondary }
+                      : { color: theme.colors.primaryDark },
+                    {
+                      fontWeight: theme.fonts.semibold,
+                    },
+                  ]}
+                >
+                  Tekrar Gönder {resendDisabled ? `(${countdown})` : ""}
+                </Text>
+              </Pressable>
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
+        {/* custom alert */}
+        <CustomAlert
+          visible={isAlertVisible}
+          onClose={closeAlert}
+          title={alertData?.title}
+          message={alertData?.content}
+          buttons={alertData?.buttons}
+        />
+      </ScreenWrapper>
+    </TouchableWithoutFeedback>
+  );
+};
+
+export default confirmOTP;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    gap: 45,
+    paddingHorizontal: wp(4),
+  },
+  form: {
+    gap: 25,
+  },
+  footer: {
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f5f5f5",
-    padding: 20,
+    gap: 5,
+  },
+  footerText: {
+    color: theme.colors.text,
+    textAlign: "center",
+    fontSize: hp(1.6),
   },
   title: {
     fontSize: 24,

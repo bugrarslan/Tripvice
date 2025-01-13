@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import {
+  Alert,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -32,14 +33,24 @@ const forgotPassword = () => {
       return;
     }
     setLoading(true);
-    const res = await sendForgotPasswordMail(emailRef.current);
-    if (res?.success) {
+    try {
+      const res = await sendForgotPasswordMail(emailRef.current);
+
+      if (res?.success) {
+        setLoading(false);
+        router.push({
+          pathname: "/signIn/confirmOTP",
+          params: { email: emailRef.current },
+        });
+      } else {
+        setLoading(false);
+        Alert.alert("hata", res.msg)
+        return;
+      }
+    } catch (error) {
       setLoading(false);
-      console.log(res.data);
-      router.push({
-        pathname: "/signIn/confirmOTP",
-        params: { email: emailRef.current },
-      });
+      Alert.alert("hata2")
+      return;
     }
   };
 
@@ -76,11 +87,7 @@ const forgotPassword = () => {
                   autoCapitalize="none"
                   onChangeText={(value) => (emailRef.current = value)}
                 />
-                <Button
-                  title={t("signIn.signInButtonText")}
-                  onPress={onSubmit}
-                  loading={loading}
-                />
+                <Button title="Send" onPress={onSubmit} loading={loading} />
               </View>
             </ScrollView>
           </KeyboardAvoidingView>

@@ -11,7 +11,7 @@ import {
 import { updateUserPassword } from "../../services/userService";
 
 const changePassword = () => {
-  const { email } = useLocalSearchParams(); // Kullanıcı email'i önceki ekrandan gönderilmeli.
+  const { email } = useLocalSearchParams();
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const router = useRouter();
