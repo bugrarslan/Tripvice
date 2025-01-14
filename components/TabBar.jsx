@@ -27,14 +27,16 @@ const TabBar = ({ state, descriptors, navigation, t }) => {
   }, []);
 
   const hiddenRoutes = [
-    "/home/budgetSelectModal",
-    "/home/companionSelectModal",
-    "/home/dateSelectModal",
-    "/home/destinationSelectModal",
-    "/home/createTrip",
+    // "/home/budgetSelectModal",
+    // "/home/companionSelectModal",
+    // "/home/dateSelectModal",
+    // "/home/destinationSelectModal",
+    // "/home/createTrip",
     "/home/loading",
-    "/profile/editProfile",
+    // "/profile/editProfile",
   ];
+
+  console.log("pathname", pathname);
 
   if (hiddenRoutes.some((route) => pathname === route) || isKeyboardVisible) {
     return null;

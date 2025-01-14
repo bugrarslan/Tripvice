@@ -9,6 +9,7 @@
     "resendOTP": "Verification code resent",
     "fillAllDetails": "Please fill all the details",
     "errorOccurred": "An error occured, please try again later.",
+    "invalidLoginCredentials": "Invalid email or password, please try again.",
     "passwordsNotMatch": "Passwords doesn't match, try again.",
     "selectDates": "Please select start and end dates.",
     "goBack": "You can not go back while loading.",

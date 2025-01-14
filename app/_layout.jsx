@@ -29,7 +29,7 @@ const MainLayout = () => {
       if (session) {
         dispatch(setAuth(session?.user));
         updateUserData(session?.user);
-        router.replace("/home");
+        router.replace("/(main)/home");
       } else {
         dispatch(clearAuth());
         router.replace("/welcome");
