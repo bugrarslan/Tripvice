@@ -37,6 +37,14 @@
     "signUpFooterText": "Zaten bir hesabınız var mı?",
     "signUpFooterButtonText": "Giriş Yap"
   },
+  "confirmSignUp": {
+    "text1": "Lütfen",
+    "text2": "adresine gönderilen doğrulama kodunu girin",
+    "placeholder": "6 haneli kodu girin",
+    "button": "Doğrula",
+    "footerText": "Doğrulama kodu ulaşmadı mı?",
+    "footerButton": "Tekrar Gönder"
+  },
   "signIn": {
     "welcomeText1": "Merhaba",
     "welcomeText2": "Hoşgeldiniz",

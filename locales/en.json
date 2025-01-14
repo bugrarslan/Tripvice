@@ -37,6 +37,14 @@
     "signUpFooterText": "Already have an account?",
     "signUpFooterButtonText": "Sign In"
   },
+  "confirmSignUp": {
+    "text1": "Please enter the verification code sent to",
+    "text2": "",
+    "placeholder": "Enter 6 digit code",
+    "button": "Verify",
+    "footerText": "Didn't receive the verification code?",
+    "footerButton": "Resend"
+  },
   "signIn": {
     "welcomeText1": "Hey",
     "welcomeText2": "Welcome Back",

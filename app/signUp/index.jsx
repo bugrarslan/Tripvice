@@ -83,25 +83,43 @@ const index = () => {
     let email = emailRef.current.trim();
     let password = passwordRef.current.trim();
 
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    const {
-      data: { session },
-      error,
-    } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          name,
-          email,
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            name,
+            email,
+          },
         },
-      },
-    });
+      });
 
-    setLoading(false);
-
-    if (error) {
+      if (data.user && !data?.user?.email_verified) {
+        setLoading(false);
+        console.log(data.user);
+        router.push({ pathname: "/signUp/confirmSignUp", params: { email } });
+      }
+      if (error) {
+        console.log(error);
+        setLoading(false);
+        showAlert({
+          type: "error",
+          title: t("alert.error"),
+          content: t("alert.errorOccurred"),
+          buttons: [
+            {
+              text: t("alert.ok"),
+              onPress: () => closeAlert(),
+            },
+          ],
+        });
+        return;
+      }
+    } catch (error) {
+      setLoading(false);
       showAlert({
         type: "error",
         title: t("alert.error"),
