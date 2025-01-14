@@ -1,4 +1,14 @@
-import { Pressable, ScrollView, Text, View, StyleSheet } from "react-native";
+import {
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  Keyboard,
+  Platform,
+} from "react-native";
 import ScreenWrapper from "../../../components/ScreenWrapper";
 import Header from "../../../components/Header";
 import Icon from "../../../assets/icons";
@@ -16,6 +26,7 @@ import { getUserImageSrc, uploadFile } from "../../../services/imageService";
 import { updateUserData } from "../../../services/userService";
 import { useTranslation } from "react-i18next";
 import CustomAlert from "../../../components/CustomAlert";
+import { StatusBar } from "expo-status-bar";
 
 const editProfile = () => {
   const currentUser = useSelector((state) => state.auth.user);
@@ -110,71 +121,84 @@ const editProfile = () => {
       : getUserImageSrc(user.image);
 
   return (
-    <ScreenWrapper backgroundColor={"white"}>
-      <View style={styles.container}>
-        <ScrollView style={{ flex: 1 }}>
-          <Header title={"Edit Profile"} showBackButton />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <ScreenWrapper backgroundColor={"white"}>
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          <StatusBar style="dark" />
+          <ScrollView
+            contentContainerStyle={styles.scrollContainer}
+            keyboardShouldPersistTaps="handled"
+            bounces={false}
+            overScrollMode="never"
+          >
+            <Header title={"Edit Profile"} showBackButton />
 
-          {/* form */}
-          <View style={styles.form}>
-            <View style={styles.avatarContainer}>
-              <Image style={styles.avatar} source={imageSource} />
-              <Pressable style={styles.cameraIcon} onPress={onPickImage}>
-                <Icon name="camera" size={20} strokeWidth={2.5} />
-              </Pressable>
+            {/* form */}
+            <View style={styles.form}>
+              <View style={styles.avatarContainer}>
+                <Image style={styles.avatar} source={imageSource} />
+                <Pressable style={styles.cameraIcon} onPress={onPickImage}>
+                  <Icon name="camera" size={20} strokeWidth={2.5} />
+                </Pressable>
+              </View>
+
+              <Text
+                style={{
+                  fontSize: hp(1.5),
+                  color: theme.colors.text,
+                  fontWeight: theme.fonts.semibold,
+                }}
+              >
+                {t("editProfile.formText")}
+              </Text>
+              <Input
+                icon={<Icon name="user" />}
+                placeholder={t("editProfile.nameInput")}
+                value={user.name}
+                onChangeText={(value) => setUser({ ...user, name: value })}
+              />
+              <Input
+                icon={<Icon name="call" />}
+                placeholder={t("editProfile.phoneInput")}
+                value={user.phoneNumber}
+                onChangeText={(value) =>
+                  setUser({ ...user, phoneNumber: value })
+                }
+              />
+              <Input
+                icon={<Icon name="location" />}
+                placeholder={t("editProfile.addressInput")}
+                value={user.address}
+                onChangeText={(value) => setUser({ ...user, address: value })}
+              />
+              <Input
+                placeholder={t("editProfile.bioInput")}
+                value={user.bio}
+                multiline
+                containerStyle={styles.bio}
+                onChangeText={(value) => setUser({ ...user, bio: value })}
+              />
+
+              <Button
+                title={t("editProfile.updateButton")}
+                loading={loading}
+                onPress={onsubmit}
+              />
             </View>
-
-            <Text
-              style={{
-                fontSize: hp(1.5),
-                color: theme.colors.text,
-                fontWeight: theme.fonts.semibold,
-              }}
-            >
-              {t("editProfile.formText")}
-            </Text>
-            <Input
-              icon={<Icon name="user" />}
-              placeholder={t("editProfile.nameInput")}
-              value={user.name}
-              onChangeText={(value) => setUser({ ...user, name: value })}
-            />
-            <Input
-              icon={<Icon name="call" />}
-              placeholder={t("editProfile.phoneInput")}
-              value={user.phoneNumber}
-              onChangeText={(value) => setUser({ ...user, phoneNumber: value })}
-            />
-            <Input
-              icon={<Icon name="location" />}
-              placeholder={t("editProfile.addressInput")}
-              value={user.address}
-              onChangeText={(value) => setUser({ ...user, address: value })}
-            />
-            <Input
-              placeholder={t("editProfile.bioInput")}
-              value={user.bio}
-              multiline
-              containerStyle={styles.bio}
-              onChangeText={(value) => setUser({ ...user, bio: value })}
-            />
-
-            <Button
-              title={t("editProfile.updateButton")}
-              loading={loading}
-              onPress={onsubmit}
-            />
-          </View>
-        </ScrollView>
-      </View>
-      <CustomAlert
-        visible={isAlertVisible}
-        onClose={closeAlert}
-        title={alertData?.title}
-        message={alertData?.content}
-        buttons={alertData?.buttons}
-      />
-    </ScreenWrapper>
+          </ScrollView>
+        </KeyboardAvoidingView>
+        <CustomAlert
+          visible={isAlertVisible}
+          onClose={closeAlert}
+          title={alertData?.title}
+          message={alertData?.content}
+          buttons={alertData?.buttons}
+        />
+      </ScreenWrapper>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -183,8 +207,10 @@ export default editProfile;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  scrollContainer: {
+    flexGrow: 1,
     paddingHorizontal: wp(4),
-    paddingBottom: hp(12),
   },
   avatarContainer: {
     height: hp(14),
@@ -213,8 +239,8 @@ const styles = StyleSheet.create({
     elevation: 7,
   },
   form: {
-    gap: hp(2),
-    marginTop: 20,
+    flex: 1,
+    gap: 25,
   },
   bio: {
     flexDirection: "row",

@@ -128,8 +128,8 @@ const index = () => {
           <ScrollView
             contentContainerStyle={styles.scrollContainer}
             keyboardShouldPersistTaps="handled"
-            bounces={false} // for iOS
-            overScrollMode="never" // for Android
+            bounces={false}
+            overScrollMode="never"
           >
             <BackButton router={router} />
 

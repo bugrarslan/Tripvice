@@ -1,26 +1,42 @@
-import { StyleSheet, View } from "react-native";
-import React from "react";
+import { Keyboard, StyleSheet, View } from "react-native";
+import React, { useState, useEffect } from "react";
 import { usePathname } from "expo-router";
 import { theme } from "../constants/theme";
 import TabBarButton from "./TabBarButton";
 import { hp, wp } from "../helpers/common";
+import * as Haptics from "expo-haptics";
 
 const TabBar = ({ state, descriptors, navigation, t }) => {
   const pathname = usePathname();
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => setKeyboardVisible(true)
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => setKeyboardVisible(false)
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 
   const hiddenRoutes = [
-    // "/home/budgetSelectModal",
-    // "/home/companionSelectModal",
-    // "/home/dateSelectModal",
-    // "/home/destinationSelectModal",
-    // "/home/createTrip",
+    "/home/budgetSelectModal",
+    "/home/companionSelectModal",
+    "/home/dateSelectModal",
+    "/home/destinationSelectModal",
+    "/home/createTrip",
     "/home/loading",
-    // "/profile/editProfile"
-    
+    "/profile/editProfile",
   ];
 
-  if (hiddenRoutes.includes(pathname)) {
+  if (hiddenRoutes.some((route) => pathname === route) || isKeyboardVisible) {
     return null;
   }
 
@@ -40,6 +56,8 @@ const TabBar = ({ state, descriptors, navigation, t }) => {
         const isFocused = state.index === index;
 
         const onPress = () => {
+          Haptics.selectionAsync();
+
           const event = navigation.emit({
             type: "tabPress",
             target: route.key,
@@ -90,11 +108,10 @@ const styles = StyleSheet.create({
     paddingVertical: hp(1.8),
     borderRadius: theme.radius.xxl,
     borderCurve: "continuous",
-    // shadow
     shadowOffset: { width: 0, height: 10 },
     shadowColor: "black",
     shadowOpacity: 0.1,
     shadowRadius: 10,
-    elevation: 3,
+    elevation: 5,
   },
 });
